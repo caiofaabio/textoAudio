@@ -1,39 +1,12 @@
-import { useState, useEffect } from "react";
 import "./App.css";
+import UseVoice from "./hook/useVoice";
+
 function App() {
-  const [text, setText] = useState("");
-  const [voices, setVoices] = useState([]);
-  const [selectedVoice, setSelectedVoice] = useState(null);
-
-  useEffect(() => {
-    const fetchVoices = () => {
-      const voicesList = window.speechSynthesis.getVoices();
-      setVoices(voicesList);
-    };
-    setTimeout(fetchVoices, 100);
-
-    return () => {
-      window.speechSynthesis.removeEventListener("voicesChanged", fetchVoices);
-    };
-  }, []);
-
-  function handleBtn() {
-    if (text !== "" && selectedVoice) {
-      let ut = new SpeechSynthesisUtterance(text);
-      ut.voice = selectedVoice;
-      window.speechSynthesis.speak(ut);
-    }
-  }
-
-  function handleVoiceChange(e) {
-    const voiceIndex = e.target.value;
-    const selectedVoice = voices[voiceIndex];
-    setSelectedVoice(selectedVoice);
-  }
+  const { voices, handleBtn, handleVoiceChange, setText } = UseVoice();
   return (
     <>
       <header>
-        <h1>Convertendo Texto em Audio</h1>
+        <h1>Convertendo Texto em Áudio</h1>
       </header>
       <main>
         <textarea
